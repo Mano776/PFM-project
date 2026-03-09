@@ -1,0 +1,5 @@
+{
+  "name": "Personal Finance Management System",
+  "description": "A comprehensive full-stack application for tracking income, expenses, and budgets with visual analytics and PDF reporting.",
+  "requestFramePermissions": []
+}
