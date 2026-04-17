@@ -17,8 +17,16 @@ router.get('/:userId', async (req, res) => {
 
 // Add expense
 router.post('/', async (req, res) => {
+  console.log('Backend: Received request to add expense:', req.body);
   try {
     const { userId, amount, category, description, date } = req.body;
+    
+    if (!userId) {
+      console.error('Backend: Missing userId in request');
+      return res.status(400).json({ error: 'User ID is required' });
+    }
+
+    console.log('Backend: Attempting to add expense to Firestore...');
     const docRef = await db.collection('expenses').add({
       userId,
       amount: parseFloat(amount),
@@ -27,8 +35,10 @@ router.post('/', async (req, res) => {
       date: date || new Date().toISOString(),
       createdAt: new Date().toISOString()
     });
+    console.log('Backend: Successfully added expense document with ID:', docRef.id);
     res.status(201).json({ id: docRef.id });
   } catch (error: any) {
+    console.error('Backend Error adding expense:', error.message);
     res.status(500).json({ error: error.message });
   }
 });

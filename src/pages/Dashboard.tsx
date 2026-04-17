@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Bar, Pie } from 'react-chartjs-2';
@@ -12,7 +12,9 @@ import {
   Legend,
   ArcElement,
 } from 'chart.js';
-import { TrendingUp, TrendingDown, Wallet, AlertTriangle, Download } from 'lucide-react';
+import { TrendingUp, TrendingDown, Wallet, AlertTriangle, Download, Plus, Zap } from 'lucide-react';
+import { DashboardSkeleton } from '../components/Skeleton';
+import PageWrapper from '../components/PageWrapper';
 
 ChartJS.register(
   CategoryScale,
@@ -23,6 +25,81 @@ ChartJS.register(
   Legend,
   ArcElement
 );
+
+// Animated counter hook
+function useCountUp(target: number, duration = 900) {
+  const [value, setValue] = useState(0);
+  const raf = useRef<number>(0);
+
+  useEffect(() => {
+    const start = performance.now();
+    const step = (now: number) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(target * eased);
+      if (progress < 1) raf.current = requestAnimationFrame(step);
+    };
+    raf.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf.current);
+  }, [target, duration]);
+
+  return value;
+}
+
+const StatCard: React.FC<{
+  icon: React.ReactNode;
+  label: string;
+  value: number;
+  iconBgInfo: string;
+}> = ({ icon, label, value, iconBgInfo }) => {
+  const displayed = useCountUp(value);
+  return (
+    <div className="bg-white p-7 rounded-[2rem] shadow-[0_4px_24px_rgb(0,0,0,0.02)] flex flex-col justify-between hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all h-[200px]">
+      <div className="mb-4">
+        <div className={`w-12 h-12 flex items-center justify-center rounded-[14px] ${iconBgInfo}`}>
+            {icon}
+        </div>
+      </div>
+      <div>
+          <p className="text-[12px] text-[#9ca3af] font-bold uppercase tracking-wider mb-2">{label}</p>
+          <p className="text-3xl font-black text-[#14172c] tracking-tight">
+             ₹{displayed.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+          </p>
+      </div>
+    </div>
+  );
+};
+
+// ── Savings Card (own component so useCountUp hook is at top-level) ──────────
+const SavingsCard: React.FC<{ potentialSavings: number }> = ({ potentialSavings }) => {
+  const displayed = useCountUp(potentialSavings);
+  return (
+    <div className="bg-[#f4f2ff] rounded-[2rem] p-8 relative overflow-hidden flex flex-col justify-between border-[0.5px] border-indigo-100/30 col-span-1 lg:col-span-1 min-h-[380px]">
+      <div>
+        <div className="flex justify-between items-start mb-10">
+          <div className="w-16 h-16 bg-[#5542f6] rounded-[20px] flex items-center justify-center text-white shadow-xl shadow-indigo-200/50">
+            <Zap size={28} fill="currentColor" />
+          </div>
+          <span className="bg-[#e4dfff] text-[#5542f6] text-[11px] font-bold px-3.5 py-1.5 rounded-lg tracking-wider">
+            SAVINGS TIP
+          </span>
+        </div>
+        <div className="mt-6">
+          <p className="text-[12px] font-bold text-[#6b7280] uppercase tracking-wider mb-2">Potential Savings</p>
+          <p className="text-[40px] font-black text-[#5542f6] tracking-tight mb-3">
+            ₹{displayed.toLocaleString(undefined, { minimumFractionDigits: 2 })}
+          </p>
+          <p className="text-[14px] text-[#6b7280] font-medium leading-relaxed max-w-[200px]">
+            Save your spare change to grow your money!
+          </p>
+        </div>
+      </div>
+      <button className="absolute bottom-8 right-8 w-16 h-16 bg-[#5542f6] rounded-full flex items-center justify-center text-white hover:bg-[#4331d2] transition-colors shadow-xl shadow-indigo-200/50 focus:outline-none focus:ring-4 focus:ring-indigo-100">
+        <Plus size={28} strokeWidth={2.5} />
+      </button>
+    </div>
+  );
+};
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -63,18 +140,64 @@ const Dashboard = () => {
   }, [user]);
 
   const balance = data.totalIncome - data.totalExpenses;
-  const budgetUsage = data.budget > 0 ? (data.totalExpenses / data.budget) * 100 : 0;
-  const showWarning = budgetUsage >= 80;
+  const monthlyBalance = balance; 
 
   const barData = {
     labels: ['Income', 'Expenses'],
     datasets: [
       {
-        label: 'Amount ($)',
+        label: 'Amount (INR)',
         data: [data.totalIncome, data.totalExpenses],
-        backgroundColor: ['rgba(79, 70, 229, 0.6)', 'rgba(239, 68, 68, 0.6)'],
+        backgroundColor: ['rgba(139, 92, 246, 0.7)'], 
+        borderRadius: 4,
+        barThickness: 48,
       },
     ],
+  };
+
+  const barOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+          legend: {
+              display: false,
+          }
+      },
+      scales: {
+          y: {
+              beginAtZero: true,
+              max: Math.max(data.totalIncome, data.totalExpenses) > 0 ? undefined : 1.0,
+              grid: {
+                  color: '#f3f4f6', 
+              },
+              border: {
+                  display: false
+              },
+              ticks: {
+                  color: '#9ca3af',
+                  font: {
+                      family: "'Inter', sans-serif",
+                      size: 11
+                  },
+                  stepSize: 0.1
+              }
+          },
+          x: {
+              grid: {
+                  display: false,
+              },
+              border: {
+                  display: false
+              },
+              ticks: {
+                  color: '#9ca3af',
+                  font: {
+                      family: "'Inter', sans-serif",
+                      size: 12
+                  }
+              }
+          }
+      }
   };
 
   const categoryData: any = {};
@@ -88,88 +211,126 @@ const Dashboard = () => {
       {
         data: Object.values(categoryData),
         backgroundColor: [
-          '#4F46E5', '#EF4444', '#10B981', '#F59E0B', '#6366F1', '#EC4899'
+          '#5542f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'
         ],
+        borderWidth: 0,
       },
     ],
+  };
+  
+  const pieOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+        legend: {
+            position: 'right' as const,
+            labels: {
+                color: '#6b7280',
+                font: {
+                    family: "'Inter', sans-serif",
+                    size: 12,
+                },
+                padding: 20,
+                usePointStyle: true,
+                pointStyle: 'circle'
+            }
+        }
+    }
   };
 
   const handleDownload = () => {
     window.open(`/api/report/download/${user?.uid}`, '_blank');
   };
 
-  if (loading) return <div>Loading dashboard...</div>;
+  if (loading) return <PageWrapper><DashboardSkeleton /></PageWrapper>;
 
   return (
-    <div className="space-y-8">
-      <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-gray-900">Financial Overview</h2>
-        <button
-          onClick={handleDownload}
-          className="flex items-center space-x-2 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
-        >
-          <Download size={20} />
-          <span>Download PDF Report</span>
-        </button>
-      </div>
-
-      {showWarning && (
-        <div className="bg-amber-50 border-l-4 border-amber-400 p-4 rounded-r-lg flex items-center space-x-3">
-          <AlertTriangle className="text-amber-400" />
-          <p className="text-amber-700">
-            <span className="font-bold">Budget Warning:</span> You have used {budgetUsage.toFixed(1)}% of your monthly budget!
-          </p>
+    <PageWrapper>
+      <div className="space-y-10 font-sans pb-10">
+        
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <h2 className="text-[36px] font-black text-[#14172c] tracking-tight mb-2">Finance Overview</h2>
+            <p className="text-[#6b7280] font-medium text-[15px]">Your money at a glance.</p>
+          </div>
+          <button
+            onClick={handleDownload}
+            className="flex items-center gap-2 bg-[#5542f6] text-white px-7 py-3.5 rounded-2xl hover:bg-[#4331d2] transition-colors shadow-lg shadow-indigo-200/50 font-bold text-[15px]"
+          >
+            <Download size={20} strokeWidth={2.5}/>
+            <span>Get Report</span>
+          </button>
         </div>
-      )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-green-50 rounded-lg text-green-600">
-              <TrendingUp size={24} />
+        {/* 4 Stat Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <StatCard
+            icon={<TrendingUp size={24} className="text-[#10b981]" strokeWidth={2.5}/>}
+            label="Total Income"
+            value={data.totalIncome}
+            iconBgInfo="bg-[#ecfdf5]"
+          />
+          <StatCard
+            icon={<TrendingDown size={24} className="text-[#ef4444]" strokeWidth={2.5}/>}
+            label="Total Expenses"
+            value={data.totalExpenses}
+            iconBgInfo="bg-[#fef2f2]"
+          />
+          <StatCard
+            icon={<Wallet size={24} className="text-[#5542f6]" strokeWidth={2.5}/>}
+            label="Total Balance"
+            value={balance}
+            iconBgInfo="bg-[#eef2ff]"
+          />
+          <StatCard
+            icon={<Wallet size={24} className="text-[#a855f7]" strokeWidth={2.5}/>} 
+            label="Monthly Balance"
+            value={monthlyBalance}
+            iconBgInfo="bg-[#faf5ff]"
+          />
+        </div>
+
+        {/* Bottom Section: Savings Card + Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            {/* Potential Savings Card */}
+            <SavingsCard potentialSavings={0} />
+
+            {/* Income vs Expenses Chart */}
+            <div className="bg-white rounded-[2rem] p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] col-span-1 lg:col-span-1 min-h-[380px] flex flex-col">
+                <h3 className="text-[19px] font-black text-[#14172c] mb-8">Income vs Expenses</h3>
+                <div className="flex-1 w-full min-h-[220px]">
+                    <Bar data={barData} options={barOptions} />
+                </div>
+                <div className="flex justify-center mt-6">
+                     <div className="flex items-center gap-2">
+                         <div className="w-10 h-3 bg-[#8b5cf6] rounded-sm opacity-70"></div>
+                         <span className="text-[12px] font-bold text-[#9ca3af]">Amount (INR)</span>
+                     </div>
+                </div>
             </div>
-          </div>
-          <p className="text-sm text-gray-500 font-medium">Total Income</p>
-          <p className="text-2xl font-bold text-gray-900">${data.totalIncome.toLocaleString()}</p>
-        </div>
 
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-red-50 rounded-lg text-red-600">
-              <TrendingDown size={24} />
+            {/* Expense by Category Chart */}
+            <div className="bg-white rounded-[2rem] p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] col-span-1 lg:col-span-1 min-h-[380px] relative flex flex-col">
+                <h3 className="text-[19px] font-black text-[#14172c] mb-6">Expense by Category</h3>
+                <div className="flex-1 flex items-center justify-center">
+                    {Object.keys(categoryData).length > 0 ? (
+                        <div className="w-full min-h-[220px]">
+                            <Pie data={pieData} options={pieOptions} />
+                        </div>
+                    ) : (
+                        <p className="text-[#9ca3af] text-[15px] font-medium">No expense data yet</p>
+                    )}
+                </div>
+                <button className="absolute bottom-8 right-8 w-16 h-16 bg-[#5542f6] rounded-full flex items-center justify-center text-white hover:bg-[#4331d2] transition-colors shadow-xl shadow-indigo-200/50 focus:outline-none focus:ring-4 focus:ring-indigo-100">
+                    <Plus size={28} strokeWidth={2.5} />
+                </button>
             </div>
-          </div>
-          <p className="text-sm text-gray-500 font-medium">Total Expenses</p>
-          <p className="text-2xl font-bold text-gray-900">${data.totalExpenses.toLocaleString()}</p>
-        </div>
 
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-indigo-50 rounded-lg text-indigo-600">
-              <Wallet size={24} />
-            </div>
-          </div>
-          <p className="text-sm text-gray-500 font-medium">Remaining Balance</p>
-          <p className="text-2xl font-bold text-gray-900">${balance.toLocaleString()}</p>
         </div>
       </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-          <h3 className="text-lg font-bold text-gray-900 mb-6">Income vs Expenses</h3>
-          <div className="h-64">
-            <Bar data={barData} options={{ maintainAspectRatio: false }} />
-          </div>
-        </div>
-
-        <div className="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-          <h3 className="text-lg font-bold text-gray-900 mb-6">Expense by Category</h3>
-          <div className="h-64">
-            <Pie data={pieData} options={{ maintainAspectRatio: false }} />
-          </div>
-        </div>
-      </div>
-    </div>
+    </PageWrapper>
   );
 };
 
