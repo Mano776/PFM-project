@@ -90,13 +90,13 @@ const Expenses = () => {
 
         {/* Page Header */}
         <div>
-          <h2 className="text-[36px] font-black text-[#14172c] tracking-tight mb-2">Expenses</h2>
-          <p className="text-[#6b7280] font-medium text-[15px]">Track and manage your spending.</p>
+          <h2 className="text-[36px] font-black text-[#14172c] dark:text-white tracking-tight mb-2">Expenses</h2>
+          <p className="text-[#6b7280] dark:text-slate-400 font-medium text-[15px]">Track and manage your spending.</p>
         </div>
 
         {/* Form Card */}
-        <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)]">
-          <h3 className="text-[18px] font-black text-[#14172c] mb-6">
+        <div className="bg-white dark:bg-[#1a1c2e] rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-[#2d304d] transition-colors">
+          <h3 className="text-[18px] font-black text-[#14172c] dark:text-white mb-6">
             {editingId ? '✏️ Edit Expense' : '+ Add New Expense'}
           </h3>
           {error && (
@@ -108,29 +108,29 @@ const Expenses = () => {
             <input
               type="number"
               placeholder="Amount (₹)"
-              className="px-4 py-3.5 bg-[#f3f4f8] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] font-medium"
+              className="px-4 py-3.5 bg-[#f3f4f8] dark:bg-[#252841] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] dark:text-white font-medium placeholder:text-gray-400 dark:placeholder:text-slate-500 transition-colors"
               value={formData.amount}
               onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
               required
             />
             <select
-              className="px-4 py-3.5 bg-[#f3f4f8] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] font-medium"
+              className="px-4 py-3.5 bg-[#f3f4f8] dark:bg-[#252841] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] dark:text-white font-medium transition-colors"
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
               required
             >
-              {CATEGORIES.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+              {CATEGORIES.map(cat => <option key={cat} value={cat} className="bg-white dark:bg-[#1a1c2e]">{cat}</option>)}
             </select>
             <input
               type="text"
               placeholder="Description (optional)"
-              className="px-4 py-3.5 bg-[#f3f4f8] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] font-medium"
+              className="px-4 py-3.5 bg-[#f3f4f8] dark:bg-[#252841] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] dark:text-white font-medium placeholder:text-gray-400 dark:placeholder:text-slate-500 transition-colors"
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
             />
             <input
               type="date"
-              className="px-4 py-3.5 bg-[#f3f4f8] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] font-medium"
+              className="px-4 py-3.5 bg-[#f3f4f8] dark:bg-[#252841] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] dark:text-white font-medium transition-colors"
               value={formData.date}
               onChange={(e) => setFormData({ ...formData, date: e.target.value })}
               required
@@ -149,7 +149,7 @@ const Expenses = () => {
         </div>
 
         {/* Expense List */}
-        <div className="bg-white rounded-[2rem] overflow-hidden shadow-[0_4px_24px_rgb(0,0,0,0.02)]">
+        <div className="bg-white dark:bg-[#1a1c2e] rounded-[2rem] overflow-hidden shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-[#2d304d] transition-colors">
           {listLoading ? (
             <div className="p-6">
               {[...Array(4)].map((_, i) => (
@@ -173,26 +173,26 @@ const Expenses = () => {
               {/* Desktop Table */}
               <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full text-left">
-                  <thead className="bg-[#f9fafb] border-b border-gray-100">
+                  <thead className="bg-[#f9fafb] dark:bg-[#252841] border-b border-gray-100 dark:border-[#2d304d] transition-colors">
                     <tr>
-                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] uppercase tracking-wider">Category</th>
-                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] uppercase tracking-wider">Description</th>
-                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] uppercase tracking-wider">Amount</th>
-                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] uppercase tracking-wider">Date</th>
-                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] uppercase tracking-wider text-right">Actions</th>
+                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] dark:text-slate-500 uppercase tracking-wider">Category</th>
+                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] dark:text-slate-500 uppercase tracking-wider">Description</th>
+                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] dark:text-slate-500 uppercase tracking-wider">Amount</th>
+                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] dark:text-slate-500 uppercase tracking-wider">Date</th>
+                      <th className="px-6 py-4 text-xs font-bold text-[#9ca3af] dark:text-slate-500 uppercase tracking-wider text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-gray-100 dark:divide-[#2d304d]">
                     {expenses.map((expense) => (
-                      <tr key={expense.id} className="hover:bg-[#f9fafb] transition-colors">
+                      <tr key={expense.id} className="hover:bg-[#f9fafb] dark:hover:bg-[#252841] transition-colors border-b border-gray-100 dark:border-[#2d304d] last:border-0">
                         <td className="px-6 py-4">
-                          <span className="px-3 py-1 bg-[#eef2ff] text-[#5542f6] rounded-lg text-xs font-bold uppercase">
+                          <span className="px-3 py-1 bg-[#eef2ff] dark:bg-indigo-500/10 text-[#5542f6] dark:text-indigo-400 rounded-lg text-xs font-bold uppercase">
                             {expense.category}
                           </span>
                         </td>
-                        <td className="px-6 py-4 text-[#14172c] font-medium">{expense.description || '-'}</td>
+                        <td className="px-6 py-4 text-[#14172c] dark:text-slate-200 font-medium">{expense.description || '-'}</td>
                         <td className="px-6 py-4 text-red-500 font-black text-[16px]">₹{expense.amount.toLocaleString()}</td>
-                        <td className="px-6 py-4 text-[#9ca3af] font-medium">{expense.date.split('T')[0]}</td>
+                        <td className="px-6 py-4 text-[#9ca3af] dark:text-slate-500 font-medium">{expense.date.split('T')[0]}</td>
                         <td className="px-6 py-4 text-right space-x-3">
                           <button onClick={() => startEdit(expense)} className="text-[#5542f6] hover:text-[#4331d2] transition-colors">
                             <Edit2 size={18} />

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './components/Toast';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
@@ -13,32 +14,45 @@ import Activity from './pages/Activity';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import { useTheme } from './context/ThemeContext';
+
+const ThemeIndicator = () => {
+  const { theme } = useTheme();
+  return (
+    <div className="fixed top-0 right-0 z-[9999] bg-black text-white p-2 text-xs">
+      Theme: {theme}
+    </div>
+  );
+};
 
 export default function App() {
   return (
-    <ToastProvider>
-      <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+    <ThemeProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <Router>
+            <ThemeIndicator />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
 
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Dashboard />} />
-              <Route path="income" element={<Income />} />
-              <Route path="expenses" element={<Expenses />} />
-              <Route path="budget" element={<Budget />} />
-              <Route path="reports" element={<Reports />} />
-              <Route path="goals" element={<Goals />} />
-              <Route path="recurring" element={<Recurring />} />
-              <Route path="activity" element={<Activity />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
+              <Route path="/" element={<Layout />}>
+                <Route index element={<Dashboard />} />
+                <Route path="income" element={<Income />} />
+                <Route path="expenses" element={<Expenses />} />
+                <Route path="budget" element={<Budget />} />
+                <Route path="reports" element={<Reports />} />
+                <Route path="goals" element={<Goals />} />
+                <Route path="recurring" element={<Recurring />} />
+                <Route path="activity" element={<Activity />} />
+                <Route path="settings" element={<Settings />} />
+              </Route>
 
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </Router>
-      </AuthProvider>
-    </ToastProvider>
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </Router>
+        </AuthProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }

@@ -74,17 +74,17 @@ const Budget = () => {
       <div className="space-y-8">
         {/* Page Header */}
         <div>
-          <h2 className="text-[36px] font-black text-[#14172c] tracking-tight mb-2">Budget</h2>
-          <p className="text-[#6b7280] font-medium text-[15px]">Set and track your monthly spending limit.</p>
+          <h2 className="text-[36px] font-black text-[#14172c] dark:text-white tracking-tight mb-2">Budget</h2>
+          <p className="text-[#6b7280] dark:text-slate-400 font-medium text-[15px]">Set and track your monthly spending limit.</p>
         </div>
 
         <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] text-center">
-            <div className="w-16 h-16 bg-[#eef2ff] text-[#5542f6] rounded-[20px] flex items-center justify-center mx-auto mb-4">
+          <div className="bg-white dark:bg-[#1a1c2e] rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] text-center border border-transparent dark:border-[#2d304d] transition-colors">
+            <div className="w-16 h-16 bg-[#eef2ff] dark:bg-indigo-500/10 text-[#5542f6] dark:text-indigo-400 rounded-[20px] flex items-center justify-center mx-auto mb-4">
               <Wallet size={32} />
             </div>
-            <h2 className="text-2xl font-black text-[#14172c] mb-2">Monthly Budget</h2>
-            <p className="text-[#9ca3af] mb-6 text-[15px]">Set your monthly spending limit to stay on track.</p>
+            <h2 className="text-2xl font-black text-[#14172c] dark:text-white mb-2">Monthly Budget</h2>
+            <p className="text-[#9ca3af] dark:text-slate-500 mb-6 text-[15px]">Set your monthly spending limit to stay on track.</p>
 
             <div className="bg-[#5542f6] text-white p-6 rounded-[1.25rem] mb-6">
               <p className="text-indigo-200 text-xs font-bold uppercase tracking-wider mb-1">Current Budget</p>
@@ -94,11 +94,11 @@ const Budget = () => {
             {/* Budget Progress Bar */}
             {currentBudget > 0 && (
               <div className="mb-6 text-left">
-                <div className="flex justify-between text-sm font-medium text-gray-600 mb-2">
+                <div className="flex justify-between text-sm font-medium text-gray-600 dark:text-slate-400 mb-2">
                   <span>Spent: ₹{totalExpenses.toLocaleString()}</span>
                   <span className={budgetUsage >= 80 ? 'text-red-600 font-bold' : ''}>{budgetUsage.toFixed(1)}% used</span>
                 </div>
-                <div className="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+                <div className="w-full h-3 bg-gray-100 dark:bg-[#252841] rounded-full overflow-hidden transition-colors">
                   <div
                     className={`h-full rounded-full transition-all duration-700 ease-out ${barColor}`}
                     style={{ width: `${budgetUsage}%` }}
@@ -118,11 +118,11 @@ const Budget = () => {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="text-left">
-                <label className="block text-xs font-bold text-[#374151] mb-2 uppercase tracking-wider">New Budget Amount (₹)</label>
+                <label className="block text-xs font-bold text-[#374151] dark:text-slate-500 mb-2 uppercase tracking-wider">New Budget Amount (₹)</label>
                 <input
                   type="number"
                   placeholder="e.g. 50000"
-                  className="w-full px-4 py-3.5 bg-[#f3f4f8] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] font-medium text-[15px]"
+                  className="w-full px-4 py-3.5 bg-[#f3f4f8] dark:bg-[#252841] border-none rounded-[12px] focus:ring-2 focus:ring-[#5542f6] outline-none text-[#14172c] dark:text-white font-medium text-[15px] placeholder:text-gray-400 dark:placeholder:text-slate-500 transition-colors"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
                   required

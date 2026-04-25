@@ -182,8 +182,8 @@ const Reports = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h2 className="text-[36px] font-black text-[#14172c] tracking-tight mb-2">Reports</h2>
-            <p className="text-[#6b7280] font-medium text-[15px]">Detailed analytics of your finances.</p>
+            <h2 className="text-[36px] font-black text-[#14172c] dark:text-white tracking-tight mb-2">Reports</h2>
+            <p className="text-[#6b7280] dark:text-slate-400 font-medium text-[15px]">Detailed analytics of your finances.</p>
           </div>
           <button
             onClick={handleDownload}
@@ -201,12 +201,12 @@ const Reports = () => {
             { label: 'Total Expenses', value: totalExpenses, icon: <TrendingDown size={22} className="text-[#ef4444]" strokeWidth={2.5} />, bg: 'bg-[#fef2f2]', color: 'text-[#ef4444]' },
             { label: 'Net Balance', value: netBalance, icon: <Wallet size={22} className="text-[#5542f6]" strokeWidth={2.5} />, bg: 'bg-[#eef2ff]', color: netBalance >= 0 ? 'text-[#5542f6]' : 'text-[#ef4444]' },
           ].map(card => (
-            <div key={card.label} className="bg-white rounded-[2rem] p-6 shadow-[0_4px_24px_rgb(0,0,0,0.02)] flex flex-col gap-4">
-              <div className={`w-11 h-11 rounded-[14px] flex items-center justify-center ${card.bg}`}>
+            <div key={card.label} className="bg-white dark:bg-[#1a1c2e] rounded-[2rem] p-6 shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-[#2d304d] flex flex-col gap-4 transition-colors">
+              <div className={`w-11 h-11 rounded-[14px] flex items-center justify-center ${card.bg} dark:bg-opacity-10`}>
                 {card.icon}
               </div>
               <div>
-                <p className="text-[11px] font-bold text-[#9ca3af] uppercase tracking-wider mb-1">{card.label}</p>
+                <p className="text-[11px] font-bold text-[#9ca3af] dark:text-slate-500 uppercase tracking-wider mb-1">{card.label}</p>
                 <p className={`text-2xl font-black ${card.color} tracking-tight`}>{inr(card.value)}</p>
               </div>
             </div>
@@ -214,8 +214,8 @@ const Reports = () => {
         </div>
 
         {/* Monthly Trends Bar Chart */}
-        <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)]">
-          <h3 className="text-[19px] font-black text-[#14172c] mb-6">Monthly Trends</h3>
+        <div className="bg-white dark:bg-[#1a1c2e] rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-[#2d304d] transition-colors">
+          <h3 className="text-[19px] font-black text-[#14172c] dark:text-white mb-6">Monthly Trends</h3>
           <div className="h-72 sm:h-96">
             {months.length > 0
               ? <Bar data={barData} options={barOptions} />
@@ -228,8 +228,8 @@ const Reports = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
           {/* Category Pie */}
-          <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)]">
-            <h3 className="text-[19px] font-black text-[#14172c] mb-6">Expense by Category</h3>
+          <div className="bg-white dark:bg-[#1a1c2e] rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-[#2d304d] transition-colors">
+            <h3 className="text-[19px] font-black text-[#14172c] dark:text-white mb-6">Expense by Category</h3>
             <div className="h-72">
               {Object.keys(categoryMap).length > 0
                 ? <Pie data={pieData} options={pieOptions} />
@@ -239,8 +239,8 @@ const Reports = () => {
           </div>
 
           {/* Top Expenses List */}
-          <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)]">
-            <h3 className="text-[19px] font-black text-[#14172c] mb-6">Top Expenses</h3>
+          <div className="bg-white dark:bg-[#1a1c2e] rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-[#2d304d] transition-colors">
+            <h3 className="text-[19px] font-black text-[#14172c] dark:text-white mb-6">Top Expenses</h3>
             {data.expenses.length === 0 ? (
               <div className="h-full flex items-center justify-center text-[#9ca3af] text-sm font-medium py-16">No expenses recorded yet</div>
             ) : (
@@ -255,8 +255,8 @@ const Reports = () => {
                           <span className="text-[11px] font-black text-[#5542f6]">#{i + 1}</span>
                         </div>
                         <div>
-                          <p className="text-[14px] font-semibold text-[#14172c]">{exp.description || exp.category}</p>
-                          <p className="text-[11px] text-[#9ca3af]">{exp.date?.split('T')[0]}</p>
+                          <p className="text-[14px] font-semibold text-[#14172c] dark:text-slate-200">{exp.description || exp.category}</p>
+                          <p className="text-[11px] text-[#9ca3af] dark:text-slate-500">{exp.date?.split('T')[0]}</p>
                         </div>
                       </div>
                       <span className="text-red-500 font-black text-[15px]">{inr(exp.amount)}</span>
@@ -268,28 +268,28 @@ const Reports = () => {
         </div>
 
         {/* Income Sources List */}
-        <div className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)]">
-          <h3 className="text-[19px] font-black text-[#14172c] mb-6">Income Sources</h3>
+        <div className="bg-white dark:bg-[#1a1c2e] rounded-[2rem] p-6 sm:p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-[#2d304d] transition-colors">
+          <h3 className="text-[19px] font-black text-[#14172c] dark:text-white mb-6">Income Sources</h3>
           {data.income.length === 0 ? (
             <div className="flex items-center justify-center py-12 text-[#9ca3af] text-sm font-medium">No income recorded yet</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left">
-                <thead className="bg-[#f9fafb] rounded-2xl">
+                <thead className="bg-[#f9fafb] dark:bg-[#252841] rounded-2xl transition-colors">
                   <tr>
-                    <th className="px-5 py-3.5 text-[11px] font-bold text-[#9ca3af] uppercase tracking-wider rounded-l-2xl">Source</th>
-                    <th className="px-5 py-3.5 text-[11px] font-bold text-[#9ca3af] uppercase tracking-wider">Amount (₹)</th>
-                    <th className="px-5 py-3.5 text-[11px] font-bold text-[#9ca3af] uppercase tracking-wider rounded-r-2xl">Date</th>
+                    <th className="px-5 py-3.5 text-[11px] font-bold text-[#9ca3af] dark:text-slate-500 uppercase tracking-wider rounded-l-2xl">Source</th>
+                    <th className="px-5 py-3.5 text-[11px] font-bold text-[#9ca3af] dark:text-slate-500 uppercase tracking-wider">Amount (₹)</th>
+                    <th className="px-5 py-3.5 text-[11px] font-bold text-[#9ca3af] dark:text-slate-500 uppercase tracking-wider rounded-r-2xl">Date</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-50">
                   {[...data.income]
                     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
                     .map((inc, i) => (
-                      <tr key={inc.id || i} className="hover:bg-[#f9fafb] transition-colors">
-                        <td className="px-5 py-4 font-semibold text-[#14172c] text-[14px]">{inc.source}</td>
+                      <tr key={inc.id || i} className="hover:bg-[#f9fafb] dark:hover:bg-[#252841] transition-colors border-b border-gray-50 dark:border-[#2d304d] last:border-0">
+                        <td className="px-5 py-4 font-semibold text-[#14172c] dark:text-slate-200 text-[14px]">{inc.source}</td>
                         <td className="px-5 py-4 text-[#10b981] font-black text-[15px]">{inr(inc.amount)}</td>
-                        <td className="px-5 py-4 text-[#9ca3af] font-medium text-[14px]">{inc.date?.split('T')[0]}</td>
+                        <td className="px-5 py-4 text-[#9ca3af] dark:text-slate-500 font-medium text-[14px]">{inc.date?.split('T')[0]}</td>
                       </tr>
                     ))}
                 </tbody>

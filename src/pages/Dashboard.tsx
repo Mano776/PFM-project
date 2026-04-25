@@ -54,15 +54,15 @@ const StatCard: React.FC<{
 }> = ({ icon, label, value, iconBgInfo }) => {
   const displayed = useCountUp(value);
   return (
-    <div className="bg-white p-7 rounded-[2rem] shadow-[0_4px_24px_rgb(0,0,0,0.02)] flex flex-col justify-between hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all h-[200px]">
+    <div className="bg-white dark:bg-[#0c0d21] p-7 rounded-[2rem] shadow-[0_4px_24px_rgb(0,0,0,0.02)] flex flex-col justify-between hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all h-[200px] border border-transparent dark:border-white/5">
       <div className="mb-4">
-        <div className={`w-12 h-12 flex items-center justify-center rounded-[14px] ${iconBgInfo}`}>
+        <div className={`w-12 h-12 flex items-center justify-center rounded-[14px] ${iconBgInfo} dark:bg-white/5 dark:border dark:border-white/5`}>
             {icon}
         </div>
       </div>
       <div>
-          <p className="text-[12px] text-[#9ca3af] font-bold uppercase tracking-wider mb-2">{label}</p>
-          <p className="text-3xl font-black text-[#14172c] tracking-tight">
+          <p className="text-[12px] text-[#9ca3af] dark:text-slate-500 font-bold uppercase tracking-wider mb-2">{label}</p>
+          <p className="text-3xl font-black text-[#14172c] dark:text-white tracking-tight">
              ₹{displayed.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </p>
       </div>
@@ -74,7 +74,7 @@ const StatCard: React.FC<{
 const SavingsCard: React.FC<{ potentialSavings: number }> = ({ potentialSavings }) => {
   const displayed = useCountUp(potentialSavings);
   return (
-    <div className="bg-[#f4f2ff] rounded-[2rem] p-8 relative overflow-hidden flex flex-col justify-between border-[0.5px] border-indigo-100/30 col-span-1 lg:col-span-1 min-h-[380px]">
+    <div className="bg-[#f4f2ff] dark:bg-[#5542f6]/5 rounded-[2rem] p-8 relative overflow-hidden flex flex-col justify-between border-[0.5px] border-indigo-100/30 dark:border-white/5 col-span-1 lg:col-span-1 min-h-[380px] transition-colors">
       <div>
         <div className="flex justify-between items-start mb-10">
           <div className="w-16 h-16 bg-[#5542f6] rounded-[20px] flex items-center justify-center text-white shadow-xl shadow-indigo-200/50">
@@ -85,11 +85,11 @@ const SavingsCard: React.FC<{ potentialSavings: number }> = ({ potentialSavings 
           </span>
         </div>
         <div className="mt-6">
-          <p className="text-[12px] font-bold text-[#6b7280] uppercase tracking-wider mb-2">Potential Savings</p>
-          <p className="text-[40px] font-black text-[#5542f6] tracking-tight mb-3">
+          <p className="text-[12px] font-bold text-[#6b7280] dark:text-indigo-300 uppercase tracking-wider mb-2">Potential Savings</p>
+          <p className="text-[40px] font-black text-[#5542f6] dark:text-indigo-400 tracking-tight mb-3">
             ₹{displayed.toLocaleString(undefined, { minimumFractionDigits: 2 })}
           </p>
-          <p className="text-[14px] text-[#6b7280] font-medium leading-relaxed max-w-[200px]">
+          <p className="text-[14px] text-[#6b7280] dark:text-slate-400 font-medium leading-relaxed max-w-[200px]">
             Save your spare change to grow your money!
           </p>
         </div>
@@ -178,8 +178,7 @@ const Dashboard = () => {
                   font: {
                       family: "'Inter', sans-serif",
                       size: 11
-                  },
-                  stepSize: 0.1
+                  }
               }
           },
           x: {
@@ -251,8 +250,8 @@ const Dashboard = () => {
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h2 className="text-[36px] font-black text-[#14172c] tracking-tight mb-2">Finance Overview</h2>
-            <p className="text-[#6b7280] font-medium text-[15px]">Your money at a glance.</p>
+            <h2 className="text-[36px] font-black text-[#14172c] dark:text-white tracking-tight mb-2">Finance Overview</h2>
+            <p className="text-[#6b7280] dark:text-slate-400 font-medium text-[15px]">Your money at a glance.</p>
           </div>
           <button
             onClick={handleDownload}
@@ -298,8 +297,8 @@ const Dashboard = () => {
             <SavingsCard potentialSavings={0} />
 
             {/* Income vs Expenses Chart */}
-            <div className="bg-white rounded-[2rem] p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] col-span-1 lg:col-span-1 min-h-[380px] flex flex-col">
-                <h3 className="text-[19px] font-black text-[#14172c] mb-8">Income vs Expenses</h3>
+            <div className="bg-white dark:bg-[#0c0d21] rounded-[2rem] p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-white/5 col-span-1 lg:col-span-1 min-h-[380px] flex flex-col transition-colors">
+                <h3 className="text-[19px] font-black text-[#14172c] dark:text-white mb-8">Income vs Expenses</h3>
                 <div className="flex-1 w-full min-h-[220px]">
                     <Bar data={barData} options={barOptions} />
                 </div>
@@ -312,8 +311,8 @@ const Dashboard = () => {
             </div>
 
             {/* Expense by Category Chart */}
-            <div className="bg-white rounded-[2rem] p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] col-span-1 lg:col-span-1 min-h-[380px] relative flex flex-col">
-                <h3 className="text-[19px] font-black text-[#14172c] mb-6">Expense by Category</h3>
+            <div className="bg-white dark:bg-[#0c0d21] rounded-[2rem] p-8 shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-white/5 col-span-1 lg:col-span-1 min-h-[380px] relative flex flex-col transition-colors">
+                <h3 className="text-[19px] font-black text-[#14172c] dark:text-white mb-6">Expense by Category</h3>
                 <div className="flex-1 flex items-center justify-center">
                     {Object.keys(categoryData).length > 0 ? (
                         <div className="w-full min-h-[220px]">

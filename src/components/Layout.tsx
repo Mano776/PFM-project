@@ -19,7 +19,7 @@ const Layout = () => {
   if (!user) return <Navigate to="/login" />;
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-[#f4f7fe] font-sans">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#f4f7fe] dark:bg-[#050614] font-sans transition-colors duration-300">
 
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -44,7 +44,7 @@ const Layout = () => {
         <header className="px-4 sm:px-8 py-5 sm:py-8 flex items-center justify-between gap-4 flex-shrink-0">
           {/* Hamburger — mobile only */}
           <button
-            className="md:hidden w-11 h-11 bg-white rounded-[12px] flex items-center justify-center text-[#14172c] border border-gray-100 shadow-sm flex-shrink-0"
+            className="md:hidden w-11 h-11 bg-white dark:bg-[#0f1129] rounded-[12px] flex items-center justify-center text-[#14172c] dark:text-white border border-gray-100 dark:border-white/5 shadow-sm flex-shrink-0"
             onClick={() => setSidebarOpen(true)}
           >
             <Menu size={22} strokeWidth={2} />
@@ -58,7 +58,7 @@ const Layout = () => {
             <input
               type="text"
               placeholder="Search transactions..."
-              className="w-full pl-10 pr-4 py-3 sm:py-3.5 bg-white/70 border-none rounded-2xl focus:ring-2 focus:ring-indigo-400 text-sm placeholder-gray-400 text-gray-700 outline-none backdrop-blur-sm transition-all shadow-sm"
+              className="w-full pl-10 pr-4 py-3 sm:py-3.5 bg-white/70 dark:bg-white/10 border-none rounded-2xl focus:ring-2 focus:ring-indigo-500/50 text-sm placeholder-gray-400 dark:placeholder-slate-500 text-gray-700 dark:text-slate-200 outline-none backdrop-blur-md transition-all shadow-sm border border-transparent dark:border-white/5"
             />
           </div>
 
@@ -73,7 +73,7 @@ const Layout = () => {
                 +12
               </div>
             </div>
-            <button className="w-11 h-11 bg-white rounded-full flex items-center justify-center text-[#14172c] hover:bg-gray-50 border border-gray-100 shadow-sm transition-all focus:outline-none relative">
+            <button className="w-11 h-11 bg-white dark:bg-[#0f1129] rounded-full flex items-center justify-center text-[#14172c] dark:text-white hover:bg-gray-50 dark:hover:bg-[#15172b] border border-gray-100 dark:border-white/5 shadow-sm transition-all focus:outline-none relative">
               <Bell size={20} strokeWidth={1.8} />
               <span className="absolute top-2 right-2 w-2 h-2 bg-[#5542f6] rounded-full" />
             </button>

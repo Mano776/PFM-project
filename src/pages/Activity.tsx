@@ -6,15 +6,15 @@ const Activity = () => (
   <PageWrapper>
     <div className="space-y-8">
       <div>
-        <h2 className="text-[36px] font-black text-[#14172c] tracking-tight mb-2">Activity</h2>
-        <p className="text-[#6b7280] font-medium text-[15px]">Your recent financial activity.</p>
+        <h2 className="text-[36px] font-black text-[#14172c] dark:text-white tracking-tight mb-2">Activity</h2>
+        <p className="text-[#6b7280] dark:text-slate-400 font-medium text-[15px]">Your recent financial activity.</p>
       </div>
-      <div className="bg-white rounded-[2rem] p-16 shadow-[0_4px_24px_rgb(0,0,0,0.02)] flex flex-col items-center justify-center text-center">
-        <div className="w-20 h-20 bg-[#eef2ff] rounded-[20px] flex items-center justify-center mb-6">
-          <ActivityIcon size={36} className="text-[#5542f6]" strokeWidth={2} />
+      <div className="bg-white dark:bg-[#1a1c2e] rounded-[2rem] p-16 shadow-[0_4px_24px_rgb(0,0,0,0.02)] border border-transparent dark:border-[#2d304d] flex flex-col items-center justify-center text-center transition-colors">
+        <div className="w-20 h-20 bg-[#eef2ff] dark:bg-indigo-500/10 rounded-[20px] flex items-center justify-center mb-6">
+          <ActivityIcon size={36} className="text-[#5542f6] dark:text-indigo-400" strokeWidth={2} />
         </div>
-        <h3 className="text-xl font-black text-[#14172c] mb-3">No recent activity</h3>
-        <p className="text-[#9ca3af] font-medium max-w-xs">Your transaction history will appear here once you start adding income and expenses.</p>
+        <h3 className="text-xl font-black text-[#14172c] dark:text-white mb-3">No recent activity</h3>
+        <p className="text-[#9ca3af] dark:text-slate-500 font-medium max-w-xs">Your transaction history will appear here once you start adding income and expenses.</p>
       </div>
     </div>
   </PageWrapper>
