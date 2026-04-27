@@ -17,23 +17,19 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   });
 
   useEffect(() => {
-    console.log('Current theme state:', theme);
     localStorage.setItem('theme', theme);
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
       document.body.classList.add('dark');
       document.documentElement.style.backgroundColor = '#050614';
-      console.log('Added .dark class and forced bg color');
     } else {
       document.documentElement.classList.remove('dark');
       document.body.classList.remove('dark');
       document.documentElement.style.backgroundColor = '#f4f7fe';
-      console.log('Removed .dark class and reset bg color');
     }
   }, [theme]);
 
   const toggleTheme = () => {
-    console.log('toggleTheme called');
     setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
   };
 

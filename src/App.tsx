@@ -14,16 +14,6 @@ import Activity from './pages/Activity';
 import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import { useTheme } from './context/ThemeContext';
-
-const ThemeIndicator = () => {
-  const { theme } = useTheme();
-  return (
-    <div className="fixed top-0 right-0 z-[9999] bg-black text-white p-2 text-xs">
-      Theme: {theme}
-    </div>
-  );
-};
 
 export default function App() {
   return (
@@ -31,7 +21,6 @@ export default function App() {
       <ToastProvider>
         <AuthProvider>
           <Router>
-            <ThemeIndicator />
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

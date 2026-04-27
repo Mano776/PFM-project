@@ -21,23 +21,23 @@ router.get('/download/:userId', async (req, res) => {
 
     // Create PDF
     const doc = new PDFDocument();
-    let filename = `financial_report_{userId}.pdf`;
+    let filename = `financial_report_${userId}.pdf`;
 
     res.setHeader('Content-disposition', 'attachment; filename="' + filename + '"');
     res.setHeader('Content-type', 'application/pdf');
 
     doc.fontSize(25).text('Financial Report', { align: 'center' });
     doc.moveDown();
-    doc.fontSize(16).text(`Total Income: ₹{totalIncome.toFixed(2)}`);
-    doc.text(`Total Expenses: ₹{totalExpenses.toFixed(2)}`);
-    doc.text(`Remaining Balance: ₹{balance.toFixed(2)}`);
+    doc.fontSize(16).text(`Total Income: ₹${totalIncome.toFixed(2)}`);
+    doc.text(`Total Expenses: ₹${totalExpenses.toFixed(2)}`);
+    doc.text(`Remaining Balance: ₹${balance.toFixed(2)}`);
     doc.moveDown();
 
     doc.fontSize(18).text('Expense List:', { underline: true });
     doc.moveDown();
 
     expenses.forEach((exp: any, index: number) => {
-      doc.fontSize(12).text(`₹{index + 1}. ${exp.category}: ₹{exp.amount} - ${exp.description || 'No description'} (${exp.date.split('T')[0]})`);
+      doc.fontSize(12).text(`${index + 1}. ${exp.category}: ₹${exp.amount} - ${exp.description || 'No description'} (${exp.date.split('T')[0]})`);
     });
 
     doc.pipe(res);

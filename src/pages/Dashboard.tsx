@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { Bar, Pie } from 'react-chartjs-2';
@@ -12,7 +13,7 @@ import {
   Legend,
   ArcElement,
 } from 'chart.js';
-import { TrendingUp, TrendingDown, Wallet, AlertTriangle, Download, Plus, Zap } from 'lucide-react';
+import { TrendingUp, TrendingDown, Wallet, AlertTriangle, Plus, Zap } from 'lucide-react';
 import { DashboardSkeleton } from '../components/Skeleton';
 import PageWrapper from '../components/PageWrapper';
 
@@ -73,6 +74,7 @@ const StatCard: React.FC<{
 // ── Savings Card (own component so useCountUp hook is at top-level) ──────────
 const SavingsCard: React.FC<{ potentialSavings: number }> = ({ potentialSavings }) => {
   const displayed = useCountUp(potentialSavings);
+  const navigate = useNavigate();
   return (
     <div className="bg-[#f4f2ff] dark:bg-[#5542f6]/5 rounded-[2rem] p-8 relative overflow-hidden flex flex-col justify-between border-[0.5px] border-indigo-100/30 dark:border-white/5 col-span-1 lg:col-span-1 min-h-[380px] transition-colors">
       <div>
@@ -94,7 +96,10 @@ const SavingsCard: React.FC<{ potentialSavings: number }> = ({ potentialSavings 
           </p>
         </div>
       </div>
-      <button className="absolute bottom-8 right-8 w-16 h-16 bg-[#5542f6] rounded-full flex items-center justify-center text-white hover:bg-[#4331d2] transition-colors shadow-xl shadow-indigo-200/50 focus:outline-none focus:ring-4 focus:ring-indigo-100">
+      <button 
+        onClick={() => navigate('/goals')}
+        className="absolute bottom-8 right-8 w-16 h-16 bg-[#5542f6] rounded-full flex items-center justify-center text-white hover:bg-[#4331d2] transition-colors shadow-xl shadow-indigo-200/50 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+      >
         <Plus size={28} strokeWidth={2.5} />
       </button>
     </div>
@@ -103,6 +108,7 @@ const SavingsCard: React.FC<{ potentialSavings: number }> = ({ potentialSavings 
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [data, setData] = useState({
     totalIncome: 0,
     totalExpenses: 0,
@@ -237,9 +243,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleDownload = () => {
-    window.open(`/api/report/download/${user?.uid}`, '_blank');
-  };
+
 
   if (loading) return <PageWrapper><DashboardSkeleton /></PageWrapper>;
 
@@ -250,16 +254,9 @@ const Dashboard = () => {
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h2 className="text-[36px] font-black text-[#14172c] dark:text-white tracking-tight mb-2">Finance Overview</h2>
+            <h2 className="text-[28px] sm:text-[36px] font-black text-[#14172c] dark:text-white tracking-tight mb-2">Finance Overview</h2>
             <p className="text-[#6b7280] dark:text-slate-400 font-medium text-[15px]">Your money at a glance.</p>
           </div>
-          <button
-            onClick={handleDownload}
-            className="flex items-center gap-2 bg-[#5542f6] text-white px-7 py-3.5 rounded-2xl hover:bg-[#4331d2] transition-colors shadow-lg shadow-indigo-200/50 font-bold text-[15px]"
-          >
-            <Download size={20} strokeWidth={2.5}/>
-            <span>Get Report</span>
-          </button>
         </div>
 
         {/* 4 Stat Cards */}
@@ -322,7 +319,10 @@ const Dashboard = () => {
                         <p className="text-[#9ca3af] text-[15px] font-medium">No expense data yet</p>
                     )}
                 </div>
-                <button className="absolute bottom-8 right-8 w-16 h-16 bg-[#5542f6] rounded-full flex items-center justify-center text-white hover:bg-[#4331d2] transition-colors shadow-xl shadow-indigo-200/50 focus:outline-none focus:ring-4 focus:ring-indigo-100">
+                <button 
+                    onClick={() => navigate('/expenses')}
+                    className="absolute bottom-8 right-8 w-16 h-16 bg-[#5542f6] rounded-full flex items-center justify-center text-white hover:bg-[#4331d2] transition-colors shadow-xl shadow-indigo-200/50 focus:outline-none focus:ring-4 focus:ring-indigo-100"
+                >
                     <Plus size={28} strokeWidth={2.5} />
                 </button>
             </div>

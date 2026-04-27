@@ -10,6 +10,8 @@ import incomeRoutes from "./backend/routes/income.ts";
 import expenseRoutes from "./backend/routes/expense.ts";
 import budgetRoutes from "./backend/routes/budget.ts";
 import reportRoutes from "./backend/routes/report.ts";
+import goalsRoutes from "./backend/routes/goals.ts";
+import recurringRoutes from "./backend/routes/recurring.ts";
 
 dotenv.config();
 
@@ -28,6 +30,8 @@ async function startServer() {
   app.use("/api/expense", expenseRoutes);
   app.use("/api/budget", budgetRoutes);
   app.use("/api/report", reportRoutes);
+  app.use("/api/goals", goalsRoutes);
+  app.use("/api/recurring", recurringRoutes);
 
   // Health check
   app.get("/api/health", (req, res) => {

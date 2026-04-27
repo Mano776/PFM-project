@@ -87,7 +87,7 @@ const Income = () => {
 
         {/* Page Header */}
         <div>
-          <h2 className="text-[36px] font-black text-[#14172c] dark:text-white tracking-tight mb-2">Income</h2>
+          <h2 className="text-[28px] sm:text-[36px] font-black text-[#14172c] dark:text-white tracking-tight mb-2">Income</h2>
           <p className="text-[#6b7280] dark:text-slate-400 font-medium text-[15px]">Track all your income sources.</p>
         </div>
 
